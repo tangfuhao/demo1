@@ -19,7 +19,6 @@ function RoomLogic(){
     
 
 
-    this.server_time = new Date();
 
     this.resetRoom = function(room_id){
         room_list[room_id] = new Room();
@@ -38,7 +37,7 @@ function RoomLogic(){
                 "result":true,
                 "actor_list":room_item.actor_list,
                 "running_time":room_item.running_time,
-                "server_time":this.server_time.getTime()
+                "server_time":new Date().getTime()
             };
             return data;
         }
@@ -104,7 +103,7 @@ function RoomLogic(){
             if(is_all_player_load_scene){
                 if(room_item.running_time <= 0){
                     //3秒以后
-                    room_item.running_time = this.server_time.getTime() + 3000;
+                    room_item.running_time = new Date().getTime() + 3000;
                 }
                 return {"result":false,"running_time":room_item.running_time};
             }

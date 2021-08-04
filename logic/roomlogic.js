@@ -33,9 +33,16 @@ function RoomLogic(){
                 room_item = resetRoom(room_id);
             }
 
+            
+            //把对象转换为属性数组
+            var real_actor_list = new Array();
+            for (let prop of Object.keys(room_item.actor_list)){
+                real_actor_list.push({"actor_id":prop,"player_id":room_item.actor_list[prop]});
+            }
+
             var data =  {
                 "result":true,
-                "actor_list":room_item.actor_list,
+                "actor_list":real_actor_list,
                 "running_time":room_item.running_time,
                 "server_time":new Date().getTime()
             };

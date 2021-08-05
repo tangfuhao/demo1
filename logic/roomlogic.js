@@ -11,6 +11,18 @@ function Room(id){
     this.running_time = 0;
 
     this.prepare_player = new Map();
+
+    this.cache_real_actor_list = new Array();
+
+    this.update_actor_list_cache = function(){
+        //把对象转换为属性数组
+        this.cache_real_actor_list.length = 0;
+        for (let prop of Object.keys(this.actor_list)){
+            this.cache_real_actor_list.push({"actor_id":prop,"player_id":this.actor_list[prop]});
+        }
+    }
+
+    this.update_actor_list_cache();
 };
 
 function RoomLogic(){
@@ -25,6 +37,8 @@ function RoomLogic(){
         return room_list[room_id]
     }
 
+    
+
     this.get_status = function(room_id,player_id){
         if(this.room_list[room_id] != undefined){
             var room_item = this.room_list[room_id];
@@ -34,15 +48,11 @@ function RoomLogic(){
             }
 
             
-            //把对象转换为属性数组
-            var real_actor_list = new Array();
-            for (let prop of Object.keys(room_item.actor_list)){
-                real_actor_list.push({"actor_id":prop,"player_id":room_item.actor_list[prop]});
-            }
+            
 
             var data =  {
                 "result":true,
-                "actor_list":real_actor_list,
+                "actor_list":room_item.cache_real_actor_list,
                 "running_time":room_item.running_time,
                 "server_time":new Date().getTime()
             };
@@ -60,6 +70,7 @@ function RoomLogic(){
                 if(player_for_actor == ""){
                     room_item.actor_list[actor_id] = player_id;
                     room_item.prepare_player.set(player_id,false);
+                    room_item.update_actor_list_cache();
                     return {"result":true};
                 }else if(player_for_actor == player_id){
                     return {"result":true};
@@ -81,7 +92,12 @@ function RoomLogic(){
                 }
             }
 
-            return {"result":all_actor_has_player};
+            var data = {
+                "result":all_actor_has_player,
+                "actor_list":room_item.cache_real_actor_list
+            };
+
+            return data;
         }
         return {"result":false};
     }

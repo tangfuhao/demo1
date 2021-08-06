@@ -70,10 +70,14 @@ function RoomLogic(){
                 if(player_for_actor == player_id){
                     return {"result":true};
                 }else if(player_for_actor == ""){
-                    room_item.actor_list[actor_id] = player_id;
-                    room_item.prepare_player.set(player_id,false);
-                    room_item.update_actor_list_cache();
-                    return {"result":true};
+
+                    if(!room_item.prepare_player.has(player_id)){
+                        room_item.actor_list[actor_id] = player_id;
+                        room_item.prepare_player.set(player_id,false);
+                        room_item.update_actor_list_cache();
+                        return {"result":true};
+                    }
+                    
                 }else if(player_id == ""){
                     room_item.prepare_player.delete(room_item.actor_list[actor_id]);
                     room_item.actor_list[actor_id] = player_id;

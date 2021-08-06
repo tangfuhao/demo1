@@ -67,12 +67,17 @@ function RoomLogic(){
             var room_item = this.room_list[room_id];
             var player_for_actor = room_item.actor_list[actor_id];
             if(player_for_actor != undefined){
-                if(player_for_actor == ""){
+                if(player_for_actor == player_id){
+                    return {"result":true};
+                }else if(player_for_actor == ""){
                     room_item.actor_list[actor_id] = player_id;
                     room_item.prepare_player.set(player_id,false);
                     room_item.update_actor_list_cache();
                     return {"result":true};
-                }else if(player_for_actor == player_id){
+                }else if(player_id == ""){
+                    room_item.prepare_player.delete(room_item.actor_list[actor_id]);
+                    room_item.actor_list[actor_id] = player_id;
+                    room_item.update_actor_list_cache();
                     return {"result":true};
                 }
             }

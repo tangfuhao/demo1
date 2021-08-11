@@ -135,9 +135,9 @@ function RoomLogic(){
             if(is_all_player_load_scene){
                 if(room_item.running_time <= 0){
                     //3秒以后
-                    room_item.running_time = new Date().getTime() + 3000;
+                    room_item.running_time = new Date().getTime() + 3500;
                 }
-                return {"result":false,"running_time":room_item.running_time};
+                return {"result":true,"running_time":room_item.running_time};
             }
         }
         return {"result":false};

@@ -43,6 +43,13 @@ router.get('/request_play', function(req, res, next) {
 });
 
 
+//重置房间
+router.get('/reset_room', function(req, res, next) {
+    var myobj = urlib.parse(req.url,true);
+    var data = roomlogic.reset_room(myobj.query.room_id);
+    res.status(200).json(data);
+});
+
 
 
 module.exports = router;

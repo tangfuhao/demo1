@@ -22,6 +22,15 @@ function Room(id){
         }
     }
 
+    //重置房间数据
+    this.reset = function(){
+        this.player_in_room = [];
+        this.actor_list = {"role1":"","role2":""};
+        this.running_time = 0;
+        this.prepare_player = new Map();
+        this.update_actor_list_cache();
+    }
+
     this.update_actor_list_cache();
 };
 
@@ -124,6 +133,7 @@ function RoomLogic(){
         if(this.room_list[room_id] != undefined){
             var room_item = this.room_list[room_id];
             var is_all_player_load_scene = true;
+            
 
             for (var [key, value] of room_item.prepare_player) {
                 if(!value){
@@ -132,13 +142,22 @@ function RoomLogic(){
                 }
             }
             
-            if(is_all_player_load_scene){
+            if(room_item.prepare_player.size > 0 && is_all_player_load_scene){
                 if(room_item.running_time <= 0){
                     //3秒以后
                     room_item.running_time = new Date().getTime() + 3500;
                 }
                 return {"result":true,"running_time":room_item.running_time};
             }
+        }
+        return {"result":false};
+    }
+
+    this.reset_room = function(room_id){
+        if(this.room_list[room_id] != undefined){
+            var room_item = this.room_list[room_id];
+            room_item.reset();
+            return {"result":true};
         }
         return {"result":false};
     }
